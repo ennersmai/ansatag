@@ -7,7 +7,6 @@ const { combine, timestamp, printf, colorize, align } = winston.format;
 // Custom format for console output
 const consoleFormat = combine(
   colorize({ all: true }),
-  timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   align(),
   printf((info) => {
     const { timestamp, level, message, ...args } = info;
