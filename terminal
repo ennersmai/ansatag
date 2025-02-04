@@ -1,0 +1,37 @@
+npm install -g local-ssl-proxy
+npm run dev:https 
+
+# Stop any running instances
+pkill -f "local-ssl-proxy"
+
+# Start fresh
+npx local-ssl-proxy --source 3001 --target 3000 
+
+npm install @tsconfig/vite-react @tsconfig/node18 --save-dev 
+npm install @types/node@18 --save-dev
+
+npm uninstall @supabase/supabase-js
+npm install @supabase/supabase-js@2.39.8
+
+# Install missing dependencies
+npm install @radix-ui/react-slot lucide-react node-cache clsx tailwind-merge
+
+# Update TypeScript configuration
+npm install @types/react@18.2.45 @types/react-dom@18.2.18 --save-dev
+
+# Clean install dependencies
+rm -rf node_modules/ package-lock.json
+npm install
+rm -rf dist/
+npm run build
+# Should complete without errors
+
+npm list @supabase/supabase-js
+# Should show @supabase/supabase-js@2.39.8 
+
+npm view @supabase/supabase-js versions
+# Shows latest is 2.39.8 
+
+# Final verification commands
+npm list @supabase/supabase-js # Should show 2.39.8
+npm run build # Should complete without errors 

@@ -1,0 +1,175 @@
+# Magent MVP Technical Product Requirements Document
+
+## 1. Project Overview
+
+### Project Name
+Magent (AI Agent Platform) - mAI Agent (Phase 1)
+
+### Target Launch
+3 Days
+
+## 2. Core Vision
+
+Build a no-code AI agent platform enabling users to create, customize, and deploy voice/text agents for:
+- Customer support
+- Workflow automation
+- Personal assistance
+- AI Agent for your business
+## 3. current backend file structure  
+   ├── agent/
+   │   ├── orchestrator.ts (exists)
+   │   ├── intent-detector.ts (needed - V3)
+   │   └── tool-router.ts (needed - R1)
+   ├── rag/
+   │   ├── supabase-client.ts
+   │   ├── chunker.ts
+   │   └── embeddings.ts
+   ├── tools/
+   │   ├── calendar/
+   │   ├── cache/
+   │   └── email/
+   └── voice/
+       ├── stt.ts
+       └── tts.ts
+
+### Backend
+- Technology: Node.js + Express
+- Authentication: OAuth2.0, JWT
+
+### Frontend
+- Technology: React + TypeScript
+- UI Components: shadcn/ui (dynamic UI components)
+
+### Database
+- Platform: Supabase (PostgreSQL)
+- Vector Support: pgvector for RAG
+- Security: Row-Level Security (RLS) policies
+
+### AI Core
+- NLP & Intent/Entity Extraction: DeepSeek-V3
+- Orchestration & Tool Routing: DeepSeek-R1
+
+### APIs & Integrations
+- Email: Resend
+- Messaging: Twilio (WhatsApp)
+- Authentication: Nango (Google Auth)
+- Speech-to-Text: Gladia
+- Text-to-Speech: ElevenLabs
+
+## 4. Key Data Flows
+
+### A. User Interaction Workflow
+
+1. **Input**
+   - Voice (Gladia STT) or Text
+   - Transcribed to text
+
+2. **NLP Processing**
+   - DeepSeek-V3 extracts:
+     - Intent (e.g., book_appointment)
+     - Entities (date, name)
+
+3. **Orchestration** (DeepSeek-R1)
+   - RAG Lookup in Supabase for user documents
+   - Real-Time Search via Brave
+   - Tool Execution (e.g., Google Calendar API)
+
+4. **Output**
+   - Text-to-Speech (ElevenLabs)
+   - Dynamic UI buttons (e.g., "Modify Appointment")
+
+### B. RAG Strategy
+
+- **Chunking**: 512 tokens (LangChain RecursiveTextSplitter)
+- **Activation Logic**:
+  ```python
+  # Pseudo-code: R1 decides RAG usage
+  if "my doc says" in query or rag_confidence > 0.7:
+      search_supabase()
+  else:
+      use_cache()
+  ```
+
+## 5. Critical Features
+
+### Voice Interaction
+- No interruptions: Queue audio until agent finishes
+- Pre-cached responses for reduced latency
+
+### File Handling
+- Upload PDF/TXT to Supabase
+- Automatic chunking and embedding via V3
+
+### Appointment Booking
+- R1 validates appointments
+- Integrates with Google Calendar API
+- Returns event link and interactive buttons
+
+### Security
+- RLS policies for user-specific data
+- OAuth2.0 (Google/Apple authentication)
+
+## 6. Cost Optimization
+
+- Caching frequent queries in Redis
+- Supabase free tier, scaling to $25/month
+
+## 7. Development Roadmap (Phase 1 MVP)
+
+- Supabase RAG setup
+- V3 intent detection scaffold
+- Tool integrations (Google Calendar, Brave Search)
+- React chat UI with dynamic buttons
+- Voice interface (STT/TTS streaming)
+- Stress testing for 100+ concurrent users
+
+## 8. Risks & Mitigations
+
+| Risk | Mitigation Strategy |
+|------|---------------------|
+| RAG Hallucinations | Rule-based citation checks |
+| API Rate Limits | Nango for OAuth pooling, exponential backoff |
+| Voice Latency | Pre-cache common phrases |
+
+## 9. System Architecture
+
+```
+┌─────────────┐ ┌──────────────┐
+│ User │ │ Magent │
+│ (Voice/Text)├─────────►│ Orchestrator │
+└──────┬──────┘ └──────┬───────┘
+       │               │
+┌──────▼──────┐ ┌───────▼────────┐
+│ STT/TTS │ │ DeepSeek V3 │
+│ (Gladia/11L)│ │ (Intent/Entity)│
+└─────────────┘ └───────┬───────┘
+                        │
+               ┌──────▼──────┐
+               │ DeepSeek R1 │
+               │ (Tool Router)│
+               └──────┬───────┘
+                      │
+┌─────────────────┬──────┼─────┬─────────────────┐
+▼ ▼ ▼ ▼ ▼
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│ Google Tools │ │Cache  │          │ Supabase RAG │ │ CRM/Email │
+│ (Calendar) │ │ (Fast-response) │ │ (Chunk 512) │ │ (Twilio/etc) │
+└──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+```
+
+## 10. Immediate Next Actions
+
+1. Set Up Supabase RAG
+   - Clone CSDN's RAG guide
+   - Add RLS policies
+   - Implement 512-token chunking
+
+2. Prototype Agent Logic
+   - Node.js + Express
+   - Test R1/V3 handoff for appointment booking
+
+3. Build React UI
+   - Chat interface
+   - Dynamic buttons using shadcn/ui components
+
+

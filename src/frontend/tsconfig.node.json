@@ -1,0 +1,25 @@
+  // src/frontend/tsconfig.node.json
+  {
+    "extends": "@tsconfig/node18/tsconfig.json",
+    "compilerOptions": {
+      "composite": true,
+      "tsBuildInfoFile": "./.tsbuildinfo",
+      "target": "ES2022",
+      "lib": ["ES2023"],
+      "module": "ESNext",
+      "skipLibCheck": true,
+
+      /* Bundler mode */
+      "moduleResolution": "Bundler",
+      "isolatedModules": true,
+      "moduleDetection": "force",
+      "noEmit": false,
+
+      /* Linting */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true
+    },
+    "include": ["vite.config.ts"]
+  }

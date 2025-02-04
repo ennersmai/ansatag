@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/scripts",
+    "rootDir": "..",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "target": "ES2022"
+  },
+  "include": [
+    "./**/*.ts",
+    "../lib/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+} 
