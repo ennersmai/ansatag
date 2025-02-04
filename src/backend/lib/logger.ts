@@ -12,15 +12,6 @@ const consoleFormat = combine(
     const { level, message, ...args } = info;
       Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
     }`;
-  })
-);
-
-// Custom format for file output (no colors)
-const fileFormat = combine(
-  timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  align(),
-  printf((info) => {
-      Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
     }`;
   })
 );
