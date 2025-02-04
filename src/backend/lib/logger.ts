@@ -50,7 +50,7 @@ const logger = winston.createLogger({
     })
   ]
 });
-
+  },
 // Export a wrapper with typed methods
 export const log = {
   info: (message: string, meta?: object) => logger.info(message, meta),
