@@ -9,9 +9,7 @@ const consoleFormat = combine(
   colorize({ all: true }),
   align(),
   printf((info) => {
-    const { timestamp, level, message, ...args } = info;
-    const ts = timestamp.slice(11, 19);
-    return `${timestamp} [${level}]: ${message} ${
+    const { level, message, ...args } = info;
       Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
     }`;
   })
@@ -22,8 +20,6 @@ const fileFormat = combine(
   timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   align(),
   printf((info) => {
-    const { timestamp, level, message, ...args } = info;
-    return `${timestamp} [${level}]: ${message} ${
       Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
     }`;
   })
@@ -33,10 +29,8 @@ const fileFormat = combine(
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
-    winston.format.timestamp(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
       // Ensure timestamp is a string
-      const ts = (timestamp as string)?.slice(11, 19) || new Date().toISOString().slice(11, 19);
       const metaStr = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : '';
       return `${ts} [${level}]: ${message} ${metaStr}`;
     })
