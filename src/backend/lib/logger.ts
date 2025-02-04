@@ -2,7 +2,7 @@ import winston from 'winston';
 import 'winston-daily-rotate-file';
 import path from 'path';
 
-const { combine, timestamp, printf, colorize, align } = winston.format;
+const { combine, printf, colorize, align } = winston.format;
 
 // Custom format for console output
 const consoleFormat = combine(
