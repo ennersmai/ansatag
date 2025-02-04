@@ -1,13 +1,10 @@
 {
-  "name": "magent-backend",
-  "version": "1.0.0",
-  "private": true,
+  "name": "backend",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "rimraf dist && tsup",
-    "start": "node dist/server.js",
-    "clean": "rimraf dist",
+    "build": "tsup src/backend/server.ts",
+    "start": "node dist/server.js"
     "load-knowledge": "tsx scripts/load_knowledge.ts",
     "setup-db": "tsx scripts/setup_db.ts",
     "migrate": "tsx scripts/run_migrations.ts",
